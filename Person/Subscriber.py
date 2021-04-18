@@ -9,3 +9,6 @@ class Subscriber(Person):
         self.username = username
         self.telephoneNumber = telephone
         super().__init__(id, gender, nameSet, firstName, surname, 1)
+
+    def getObject(self):
+        return self
