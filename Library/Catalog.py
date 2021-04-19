@@ -1,5 +1,6 @@
 import json
 
+from Library.Book import Book
 
 class Catalog:
     id = 1
@@ -23,7 +24,7 @@ class Catalog:
             with open(filename, 'r') as file:
                 list_json = json.load(file)
                 for i in list_json:
-                    self.list_books.append(i)
+                    self.list_books.append(Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"], i["imageLink"], i["pages"], i["year"]))
                 print("Forloop task is done")
 
         except FileNotFoundError:

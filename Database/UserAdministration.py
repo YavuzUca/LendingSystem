@@ -22,7 +22,7 @@ class UserAdministration:
         newCustomer = {"id":id, "firstname": firstname, "surname": surname, "address": address, "zipcode": zipcode, "city": city, "email": emailaddress, "username": username, "phone number": telephonenumber}
         
         with open('thajsonfile', 'a') as json_file:
-            json.dumps(newCustomer, json_file)
+            json.dump(newCustomer, json_file)
 
     
     def showsubscribers(self):

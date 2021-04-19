@@ -25,6 +25,7 @@ class Loanitem:
     def addBookToList(self, obj):
         if obj.checkAvailability():
             self.list_bookitems.append(obj)
+            obj.available = False
         else:
             print("Book not available")
 
