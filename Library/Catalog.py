@@ -1,6 +1,6 @@
 import json
-
 from Library.Book import Book
+
 
 class Catalog:
     id = 1
@@ -24,7 +24,9 @@ class Catalog:
             with open(filename, 'r') as file:
                 list_json = json.load(file)
                 for i in list_json:
-                    self.list_books.append(Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"], i["imageLink"], i["pages"], i["year"]))
+                    self.list_books.append(
+                        Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"],
+                             i["image_link"], i["pages"], i["year"]))
                 print("Forloop task is done")
 
         except FileNotFoundError:
@@ -32,7 +34,21 @@ class Catalog:
 
     def createBackup(self):
         with open('list_booksBackup.json', 'w') as json_file:
-            json.dump(self.list_books, json_file)
+            dict_book = []
+            for i in self.list_books:
+                arr = {"title": i.title,
+                       "author": i.author,
+                       "ISBN": i.ISBN,
+                       "country": i.country,
+                       "language": i.language,
+                       "link": i.link,
+                       "image_link": i.image_link,
+                       "pages": i.pages,
+                       "year": i.year,
+                       "list_book": [i.id for i in i.list_book],
+                       }
+                dict_book.append(arr)
+            json.dump(dict_book, json_file)
 
     def restoreBackup(self):
         try:

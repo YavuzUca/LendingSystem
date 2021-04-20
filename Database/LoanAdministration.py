@@ -1,6 +1,5 @@
 import json
 
-from Library.Loanitem import Loanitem
 
 class LoanAdministration:
     def __init__(self):
