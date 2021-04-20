@@ -15,7 +15,7 @@ class Loanitem:
     def enddate(self):
         date = datetime.date.today()
         day = date.day
-        month = date.month
+        month = date.month + 1
         year = date.year
         if month == 12:
             year += 1
