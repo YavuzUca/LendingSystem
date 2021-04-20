@@ -36,6 +36,11 @@ class Catalog:
         with open('list_booksBackup.json', 'w') as json_file:
             dict_book = []
             for i in self.list_books:
+                list_b = []
+                for j in i.list_book:
+                    arr = {"id": j.id,
+                           "available": j.available}
+                    list_b.append(arr)
                 arr = {"title": i.title,
                        "author": i.author,
                        "ISBN": i.ISBN,
@@ -45,7 +50,7 @@ class Catalog:
                        "image_link": i.image_link,
                        "pages": i.pages,
                        "year": i.year,
-                       "list_book": [i.id for i in i.list_book],
+                       "list_book": list_b,
                        }
                 dict_book.append(arr)
             json.dump(dict_book, json_file)
