@@ -36,6 +36,11 @@ class Catalog:
         with open('list_booksBackup.json', 'w') as json_file:
             dict_book = []
             for i in self.list_books:
+                list_b = []
+                for j in i.list_book:
+                    arr = {"id": j.id,
+                           "available": j.available}
+                    list_b.append(arr)
                 arr = {"title": i.title,
                        "author": i.author,
                        "ISBN": i.ISBN,
@@ -45,7 +50,7 @@ class Catalog:
                        "image_link": i.image_link,
                        "pages": i.pages,
                        "year": i.year,
-                       "list_book": [i.id for i in i.list_book],
+                       "list_book": list_b,
                        }
                 dict_book.append(arr)
             json.dump(dict_book, json_file)
@@ -53,6 +58,14 @@ class Catalog:
     def restoreBackup(self):
         try:
             with open('list_booksBackup.json') as json_file:
-                self.list_books = json.load(json_file)
+                json_list = json.load(json_file)
+                new_list = []
+                for i in json_list:
+                    obj = Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"],
+                               i["image_link"], i["pages"], i["year"])
+                    obj.list_book.append([j for j in i["list_book"]])
+                    new_list.append(obj)
+
+                self.list_books = new_list
         except:
             print("No backup found. Please make one first.")
