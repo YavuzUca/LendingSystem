@@ -58,6 +58,14 @@ class Catalog:
     def restoreBackup(self):
         try:
             with open('list_booksBackup.json') as json_file:
-                self.list_books = json.load(json_file)
+                json_list = json.load(json_file)
+                new_list = []
+                for i in json_list:
+                    obj = Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"],
+                               i["image_link"], i["pages"], i["year"])
+                    obj.list_book.append([j for j in i["list_book"]])
+                    new_list.append(obj)
+
+                self.list_books = new_list
         except:
             print("No backup found. Please make one first.")
