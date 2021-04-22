@@ -38,17 +38,20 @@ session.homePage()
 
 # run = Page()
 # run.homePage()
+
+system = LoanAdministration()
+loanitem = Loanitem(corne)
+loanitem.addBookToList(guy_copy)
+system.update(loanitem)
+system.createBackup()
+print(system.borrowedBooks[0].list_bookitems[0].id)
+=======
 # system = LoanAdministration()
 # loanitem = Loanitem(corne)
 # loanitem.addBookToList(guy_copy)
 
+
 # system.update(loanitem)
 # system.createBackup()
 # print(system.borrowedBooks)
-# system2 = LoanAdministration()
-# system2.restoreBackup()
-# print(system2.borrowedBooks)
-# print(guy_copy.available)
-# for i in system.borrowedBooks:
-#     print(i.id)
-#     print(i.list_bookitems[0].book_obj.title)
+
