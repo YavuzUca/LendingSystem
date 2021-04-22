@@ -12,32 +12,40 @@ class UserAdministration:
                 self.customerlist.append(row)
 
     def idGenerator(self):
-        id = str(random.randint(1,1000000))
+        id = str(random.randint(1, 1000000))
         while len(id) < 7:
             id = '0' + id
-        if id in self.customerlist:
-            return self.idGenerator()
-        else:
-            return id
-    
-    def addCustomer(self, firstname, surname, address, zipcode, city, emailaddress, username, telephonenumber, id = idGenerator()):
-        newCustomer = {"id":id, "firstname": firstname, "surname": surname, "address": address, "zipcode": zipcode, "city": city, "email": emailaddress, "username": username, "phone number": telephonenumber}
-        
-        with open('thajsonfile', 'a') as json_file:
-            json.dump(newCustomer, json_file)
+        #
+        # for i in self.customerlist:
+        #     if id == i.id:
+        #         return self.idGenerator()
+        return id
 
+    def addCustomer(self, obj):
+        newCustomer = {"id": self.idGenerator(),
+                       "firstname": obj.firstName,
+                       "surname": obj.surname,
+                       "address": obj.address,
+                       "zipcode": obj.zipcode,
+                       "city": obj.city,
+                       "email": obj.emailAddress,
+                       "username": obj.username,
+                       "phone number": obj.telephoneNumber,
+                       "perms": obj.permissionLevel}
+
+        self.customerlist.append(newCustomer)
 
     def showsubscribers(self):
         onlysubscribers = []
         for i in self.customerlist:
-            if i[self._permissionlevel] == 1:
+            if i["perms"] == 1:
                 onlysubscribers.append(i)
         return onlysubscribers
 
     def showLibrarian(self):
         librarianlist = []
         for i in self.customerlist:
-            if i[self._permissionlevel] == 0:
+            if i["perms"] == 0:
                 librarianlist.append(i)
         return librarianlist
 
