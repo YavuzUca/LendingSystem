@@ -26,10 +26,12 @@ class Page:
             self.homePage()
 
     def logIn(self):
+        print("Vul je je naam in")
         user_input = input()
-        for i in self.usersystem:
-            if i.firstName == user_input:
-                self.currently_loggedin = i.firstName
+        for i in self.usersystem.customerlist:
+            if i["firstname"] == user_input:
+                self.currently_loggedin = i["firstname"]
+                self.user_page()
 
     def user_page(self):
         print("1. Search Book")
