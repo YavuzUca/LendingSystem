@@ -5,7 +5,7 @@ class Page:
         self.usersystem = usersys
 
     def homePage(self):
-        print("1. Inloggen")
+        print("1. Login")
         print("2. Search Book")
         print("3. Quit\n")
 
@@ -26,12 +26,14 @@ class Page:
             self.homePage()
 
     def logIn(self):
-        print("Vul je je naam in")
+        print("Please enter your firstname:")
         user_input = input()
-        for i in self.usersystem.customerlist:
-            if i["firstname"] == user_input:
-                self.currently_loggedin = i["firstname"]
-                self.user_page()
+        for i in self.usersystem.personlist:
+            if i.firstName == user_input:
+                self.currently_loggedin = i.firstName
+                return self.user_page()
+        print("That name does not exist. You should register first.")
+        return self.homePage()
 
     def user_page(self):
         print("1. Search Book")
