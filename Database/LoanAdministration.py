@@ -2,6 +2,7 @@ import json
 from Library.Book import Book
 from Library.Bookitem import Bookitem
 from Person.Subscriber import Subscriber
+from Library.Loanitem import Loanitem
 
 class LoanAdministration:
     def __init__(self):
@@ -14,8 +15,6 @@ class LoanAdministration:
         with open('borrowedbooksBackup.json', 'w') as json_file:
             dict_book = []
             for i in self.borrowedBooks:
-                list_book = []
-
                 sub_obj = {"id": i.subscriber.id,
                            "gender": i.subscriber.gender,
                            "nameSet": i.subscriber.nameSet,
@@ -27,8 +26,8 @@ class LoanAdministration:
                            "email": i.subscriber.emailAddress,
                            "username": i.subscriber.username,
                            "telephone": i.subscriber.telephoneNumber,
+                           "bookitems": []
                             }
-                list_book.append(sub_obj)
                 for j in i.list_bookitems:
                     arr = {"id": j.id,
                            "title": j.book_obj.title,
@@ -41,26 +40,20 @@ class LoanAdministration:
                            "pages": j.book_obj.pages,
                            "year": j.book_obj.year
                            }
-                    list_book.append(arr)
-                dict_book.append(list_book)
+                    sub_obj["bookitems"].append(arr)
+                dict_book.append(sub_obj)
             json.dump(dict_book, json_file)
 
     def restoreBackup(self):
-
         with open ('borrowedbooksBackup.json') as json_file:
             json_list = json.load(json_file)
-            new_loanitem_list = []
             for i in json_list:
-                new_bookitem_list = []
                 sub_obj = Subscriber(i["id"], i["gender"], i["nameSet"], i["firstName"], i["surname"], i["address"],
                                      i["zipcode"], i["city"], i["email"], i["username"], i["telephone"])
-                new_bookitem_list.append(sub_obj)
-                for j in i:
-                    obj = Bookitem(j["id"], Book(j["title"], j["author"], "000000000X", j["country"], j["language"],
+                loanItem = Loanitem(sub_obj)
+                for j in i["bookitems"]:
+                    obj = Bookitem(Book(j["title"], j["author"], "000000000X", j["country"], j["language"],
                                                  j["link"], j["image_link"], j["pages"], j["year"]))
-                    new_bookitem_list.append(obj)
-
-                new_loanitem_list.append(new_bookitem_list)
-
-            self.borrowedBooks = new_loanitem_list
+                    loanItem.addBookToList(obj)
+                self.borrowedBooks.append(loanItem)
 
