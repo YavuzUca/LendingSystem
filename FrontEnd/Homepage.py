@@ -15,7 +15,10 @@ class Page:
         elif keypress == "2":
             self.searchBook()
         elif keypress == "3":
-            quit()
+            try:
+                quit()
+            except:
+                quit()
         else:
             print("Invalid keypress\n")
             self.homePage()
@@ -34,17 +37,16 @@ class Page:
         return self.homePage()
 
     def searchBook(self):
-        try:
-            user_input = input()
-            for cat in self.list_cat:
-                for book in cat.list_books:
-                    search = cat.searchBook(book.title)
-                    if user_input == search.title:
-                        print(f"Title: {cat.searchBook(user_input).title}\nCopies left: {len(cat.searchBook(user_input).list_book)}\n")
-                        return self.user_page() if self.currently_loggedin is not None else self.homePage()
-        except AttributeError:
-            print("Book does not exist.\n")
-            return self.user_page() if self.currently_loggedin is not None else self.homePage()
+        print("Type the title of a book")
+        user_input = input()
+        for cat in self.list_cat:
+            for book in cat.list_books:
+                search = cat.searchBook(book.title)
+                if user_input == search.title:
+                    print(f"Title: {cat.searchBook(user_input).title}\nCopies left: {len(cat.searchBook(user_input).list_book)}\n")
+                    return self.homePage() if self.currently_loggedin is None else self.user_page()
+        print("Book does not exist.\n")
+        return self.homePage() if self.currently_loggedin is None else self.user_page()
 
     def user_page(self):
         print("1. Search Book")

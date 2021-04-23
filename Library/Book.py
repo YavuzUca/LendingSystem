@@ -1,12 +1,11 @@
 class Book:
-    def __init__(self, title, author, ISBN, country, language, link, image_link, pages, year):
+    def __init__(self, author, country, imageLink, language, link, pages, title, year):
         self.title = title
         self.author = author
-        self.ISBN = ISBN
         self.country = country
         self.language = language
         self.link = link
-        self.image_link = image_link
+        self.imageLink = imageLink
         self.pages = pages
         self.year = year
         self.list_book = []
