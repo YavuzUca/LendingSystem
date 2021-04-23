@@ -12,9 +12,12 @@ class Catalog:
         return len(self.list_books)
 
     def searchBook(self, set_name):
-        for i in self.list_books:
-            if set_name == i.title:
-                return i
+        try:
+            for i in self.list_books:
+                if set_name == i.title:
+                    return i
+        except:
+            return "No book with that name exist!"
 
     def addBook(self, obj):
         self.list_books.append(obj)

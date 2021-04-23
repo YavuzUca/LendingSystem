@@ -15,36 +15,36 @@ class PublicLibrarySystem:
         self.catList = []
 
     def main(self):
-        # loanAdministration = LoanAdministration()
+        loanAdministration = LoanAdministration()
         UserSystem = UserAdministration()
         horror = Catalog("Horror")
         BookNameOne = Book("Guy", "Corne", "1111111111X", "The Netherlands",
                            "Dutch", "bol.com", "bol.com/777.png", 107, 2001)
         SubOne = Subscriber("Male", "Dutch", "Corne", "den Breejen", "bogerd 9", "2922EA", "Rotterdam",
                            "cornedev@outlook.com", "cornedb", "0180517579")
-        #
-        # horror.addBook(BookNameOne)
-        # BookCopyItemOne = Bookitem(BookNameOne)
-        # BookNameOne.update(BookCopyItemOne)
-        UserSystem.addSubcriber(SubOne)
-        #
-        # self.setCat(horror)
-        #
-        # LoanOne = Loanitem(SubOne)
-        # LoanOne.addBookToList(BookCopyItemOne)
-        # LoanOne.borrowBook()
-        #
-        # loanAdministration.update(LoanOne)
-        #
-        # loanAdministration.createBackup()
-        # UserSystem.createBackup()
-        # horror.createBackup()
-        #
-        # loanAdministration.restoreBackup()
-        # UserSystem.restoreBackup()
-        # horror.restoreBackup()
 
-        session = Page(horror, UserSystem)
+        horror.addBook(BookNameOne)
+        BookCopyItemOne = Bookitem(BookNameOne)
+        BookNameOne.update(BookCopyItemOne)
+        UserSystem.addSubcriber(SubOne)
+
+        self.setCat(horror)
+
+        LoanOne = Loanitem(SubOne)
+        LoanOne.addBookToList(BookCopyItemOne)
+        LoanOne.borrowBook()
+
+        loanAdministration.update(LoanOne)
+
+        loanAdministration.createBackup()
+        UserSystem.createBackup()
+        horror.createBackup()
+
+        loanAdministration.restoreBackup()
+        UserSystem.restoreBackup()
+        horror.restoreBackup()
+
+        session = Page(self.catList, UserSystem)
         session.homePage()
 
     def setCat(self, catObj):
