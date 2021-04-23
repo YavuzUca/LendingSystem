@@ -2,15 +2,12 @@ import datetime
 
 
 class Loanitem:
-    id = 1
-
     def __init__(self, sub_obj):
-        self.id = Loanitem.id
+        self.id = None
         self.list_bookitems = []
         self.subscriber = sub_obj
         self.startdate = datetime.date.today()
         self.enddate = self.enddate()
-        Loanitem.id += 1
 
     def enddate(self):
         date = datetime.date.today()

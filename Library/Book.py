@@ -12,4 +12,5 @@ class Book:
         self.list_book = []
 
     def update(self, obj):
+        obj.id = len(self.list_book) + 1
         self.list_book.append(obj)

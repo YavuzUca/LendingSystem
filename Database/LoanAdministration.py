@@ -4,15 +4,17 @@ from Library.Bookitem import Bookitem
 from Person.Subscriber import Subscriber
 from Library.Loanitem import Loanitem
 
+
 class LoanAdministration:
     def __init__(self):
         self.borrowedBooks = []
-    
+
     def update(self, Loanitem):
+        Loanitem.id = len(self.borrowedBooks) + 1
         self.borrowedBooks.append(Loanitem)
 
     def createBackup(self):
-        with open('borrowedbooksBackup.json', 'w') as json_file:
+        with open('Backups/Loanitems/borrowedbooksBackup.json', 'w') as json_file:
             dict_book = []
             for i in self.borrowedBooks:
                 sub_obj = {"id": i.subscriber.id,
@@ -27,7 +29,7 @@ class LoanAdministration:
                            "username": i.subscriber.username,
                            "telephone": i.subscriber.telephoneNumber,
                            "bookitems": []
-                            }
+                           }
                 for j in i.list_bookitems:
                     arr = {"id": j.id,
                            "title": j.book_obj.title,
@@ -45,15 +47,19 @@ class LoanAdministration:
             json.dump(dict_book, json_file)
 
     def restoreBackup(self):
-        with open ('borrowedbooksBackup.json') as json_file:
-            json_list = json.load(json_file)
-            for i in json_list:
-                sub_obj = Subscriber(i["id"], i["gender"], i["nameSet"], i["firstName"], i["surname"], i["address"],
-                                     i["zipcode"], i["city"], i["email"], i["username"], i["telephone"])
-                loanItem = Loanitem(sub_obj)
-                for j in i["bookitems"]:
-                    obj = Bookitem(Book(j["title"], j["author"], "000000000X", j["country"], j["language"],
-                                                 j["link"], j["image_link"], j["pages"], j["year"]))
-                    loanItem.addBookToList(obj)
-                self.borrowedBooks.append(loanItem)
-
+        try:
+            with open('Backups/Loanitems/borrowedbooksBackup.json') as json_file:
+                json_list = json.load(json_file)
+                for i in json_list:
+                    sub_obj = Subscriber(i["gender"], i["nameSet"], i["firstName"], i["surname"], i["address"],
+                                         i["zipcode"], i["city"], i["email"], i["username"], i["telephone"])
+                    sub_obj.id = i["id"]
+                    loanItem = Loanitem(sub_obj)
+                    for j in i["bookitems"]:
+                        obj = Bookitem(Book(j["title"], j["author"], "000000000X", j["country"], j["language"],
+                                            j["link"], j["image_link"], j["pages"], j["year"]))
+                        obj.id = j["id"]
+                        loanItem.addBookToList(obj)
+                    self.borrowedBooks.append(loanItem)
+        except FileNotFoundError:
+            print("No backup found. Please make one first.")

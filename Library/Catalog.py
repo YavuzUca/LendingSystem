@@ -3,18 +3,21 @@ from Library.Book import Book
 
 
 class Catalog:
-    id = 1
-
     def __init__(self, genre):
         self.list_books = []
-        self.id = Catalog.id
+        self.id = None
         self.genre = genre
-        Catalog.id += 1
+
+    def getCatListBooks(self):
+        return len(self.list_books)
 
     def searchBook(self, set_name):
-        for i in self.list_books:
-            if set_name == i.title:
-                return i
+        try:
+            for i in self.list_books:
+                if set_name == i.title:
+                    return i
+        except:
+            return "No book with that name exist!"
 
     def addBook(self, obj):
         self.list_books.append(obj)
@@ -33,7 +36,7 @@ class Catalog:
             return "File not found!"
 
     def createBackup(self):
-        with open('list_booksBackup.json', 'w') as json_file:
+        with open('Backups/Books/list_booksBackup.json', 'w') as json_file:
             dict_book = []
             for i in self.list_books:
                 list_b = []
@@ -57,7 +60,7 @@ class Catalog:
 
     def restoreBackup(self):
         try:
-            with open('list_booksBackup.json') as json_file:
+            with open('Backups/Books/list_booksBackup.json') as json_file:
                 json_list = json.load(json_file)
                 new_list = []
                 for i in json_list:
@@ -67,5 +70,5 @@ class Catalog:
                     new_list.append(obj)
 
                 self.list_books = new_list
-        except:
+        except FileNotFoundError:
             print("No backup found. Please make one first.")

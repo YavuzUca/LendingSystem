@@ -1,11 +1,8 @@
 class Bookitem:
-    id = 1
-
     def __init__(self, book_obj, available=True):
-        self.id = Bookitem.id
+        self.id = None
         self.book_obj = book_obj
         self.available = available
-        Bookitem.id += 1
 
     def checkAvailability(self):
         if self.available:
