@@ -1,4 +1,5 @@
 import json
+from Config.file_checker import *
 from Library.Book import Book
 
 
@@ -7,6 +8,7 @@ class Catalog:
         self.list_books = []
         self.id = None
         self.genre = genre
+        cat_file_checker(self.genre)
 
     def getCatListBooks(self):
         return len(self.list_books)
@@ -36,7 +38,7 @@ class Catalog:
             return "File not found!"
 
     def createBackup(self):
-        with open('Backups/Books/list_booksBackup.json', 'w') as json_file:
+        with open(f'Backups/Category/{self.genre.capitalize()}/list_booksBackup.json', 'w') as json_file:
             dict_book = []
             for i in self.list_books:
                 list_b = []
@@ -60,7 +62,7 @@ class Catalog:
 
     def restoreBackup(self):
         try:
-            with open('Backups/Books/list_booksBackup.json') as json_file:
+            with open(f'Backups/Category/{self.genre.capitalize()}/list_booksBackup.json') as json_file:
                 json_list = json.load(json_file)
                 new_list = []
                 for i in json_list:
