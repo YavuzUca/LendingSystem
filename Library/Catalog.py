@@ -30,8 +30,8 @@ class Catalog:
                 list_json = json.load(file)
                 for i in list_json:
                     self.list_books.append(
-                        Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"],
-                             i["image_link"], i["pages"], i["year"]))
+                        Book(i["author"], i["country"], i["imageLink"], i["language"], i["link"],
+                             i["pages"], i["title"], i["year"]))
                 print("Forloop task is done")
 
         except FileNotFoundError:
@@ -46,14 +46,14 @@ class Catalog:
                     arr = {"id": j.id,
                            "available": j.available}
                     list_b.append(arr)
-                arr = {"title": i.title,
+                arr = {
                        "author": i.author,
-                       "ISBN": i.ISBN,
                        "country": i.country,
+                       "imageLink": i.imageLink,
                        "language": i.language,
                        "link": i.link,
-                       "image_link": i.image_link,
                        "pages": i.pages,
+                       "title": i.title,
                        "year": i.year,
                        "list_book": list_b,
                        }
@@ -66,8 +66,8 @@ class Catalog:
                 json_list = json.load(json_file)
                 new_list = []
                 for i in json_list:
-                    obj = Book(i["title"], i["author"], "000000000X", i["country"], i["language"], i["link"],
-                               i["image_link"], i["pages"], i["year"])
+                    obj = Book(i["author"], i["country"], i["imageLink"], i["language"],
+                               i["link"], i["pages"], i["title"], i["year"])
                     obj.list_book.append([j for j in i["list_book"]])
                     new_list.append(obj)
 

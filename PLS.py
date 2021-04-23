@@ -1,4 +1,4 @@
-from Config.file_checker import *
+from Config.file_checker import file_checker
 from FrontEnd.Homepage import Page
 from Library.Catalog import Catalog
 from Library.Book import Book
@@ -19,15 +19,16 @@ class PublicLibrarySystem:
         loanAdministration = LoanAdministration()
         UserSystem = UserAdministration()
         horror = Catalog("Horror")
-        BookNameOne = Book("Guy", "Corne", "1111111111X", "The Netherlands",
-                           "Dutch", "bol.com", "bol.com/777.png", 107, 2001)
+        BookNameOne = Book("Corne", "The Netherlands",
+                           "Dutch", "bol.com", "bol.com/777.png", 107, "Guy", 2001)
         SubOne = Subscriber("Male", "Dutch", "Corne", "den Breejen", "bogerd 9", "2922EA", "Rotterdam",
                            "cornedev@outlook.com", "cornedb", "0180517579")
         SubTwo = Librarian("Male", "Vuuzie", "Dutch", "Uca", "bogerd 9", "2922EA")
 
         self.setCat(horror)
         drama = Catalog("Drama")
-        BookNameTwo = Book("Lifeliner", "Tim", "1111111111X", "The Netherlands", "Dutch", "bol.com", "bol.com/777.png", 107, 2001)
+        BookNameTwo = Book("Corne", "The Netherlands",
+                           "Dutch", "bol.com", "bol.com/777.png", 107, "Lifeliner", 2001)
         drama.addBook(BookNameTwo)
         BookCopyItemTwo = Bookitem(BookNameTwo)
         BookNameTwo.update(BookCopyItemTwo)
