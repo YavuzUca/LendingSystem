@@ -16,6 +16,7 @@ class Page:
         self.loansystem = LoanAdministration()
         self.listsAllCat = []
         self.Default()
+        self.setDefault()
 
     def Default(self):
 
@@ -54,9 +55,12 @@ class Page:
         # UserSystem.createBackup()
         # horror.createBackup()
         #
-        # loanAdministration.restoreBackup()
-        # UserSystem.restoreBackup()
-        # horror.restoreBackup()
+
+    def setDefault(self):
+        default = Catalog("Default")
+        default.addBookFromFile("booksset1.json")
+        self.listsAllCat.append(default)
+
 
     def homePage(self):
         print()
@@ -245,8 +249,10 @@ class Page:
         print("3. Add Book")
         print("4. Delete Book")
         print("5. Add Copy")
-        print("6. Backup")
-        print("7. Log out\n")
+        print("6. Create backup")
+        print("7. Restore backup")
+        print("8. Show Subscribers")
+        print("9. Log out\n")
 
         keypress = input()
         if keypress == "1":
@@ -262,6 +268,10 @@ class Page:
         elif keypress == "6":
             self.makeBackup()
         elif keypress == "7":
+            self.restoreBackup()
+        elif keypress == "8":
+            self.showAllSub()
+        elif keypress == "9":
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
@@ -391,3 +401,23 @@ class Page:
         else:
             print("Book returned")
             return self.user_page()
+
+    def restoreBackup(self):
+        for i in self.listsAllCat:
+            i.restoreBackup()
+        self.usersystem.restoreBackup()
+        self.loansystem.restoreBackup()
+        print("Backups has been restored on the system.")
+        return self.admin_page()
+
+    def showAllSub(self):
+        listAll = self.usersystem.showSubscribers()
+        for i in listAll:
+            print(f"Id: {i.id}")
+            print(f"User: {i.username}")
+            print(f"First name : {i.firstName}")
+            print(f"Last name: {i.surname}")
+            print("____________________________")
+        print()
+        return self.admin_page()
+

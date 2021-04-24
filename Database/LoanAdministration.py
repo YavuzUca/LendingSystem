@@ -55,8 +55,8 @@ class LoanAdministration:
                     sub_obj.id = i["id"]
                     loanItem = Loanitem(sub_obj)
                     for j in i["bookitems"]:
-                        obj = Bookitem(Book(i["author"], i["country"], i["imageLink"], i["language"], i["link"],
-                                            i["pages"], i["title"], i["year"]))
+                        obj = Bookitem(Book(j["author"], j["country"], j["imageLink"], j["language"], j["link"],
+                                            j["pages"], j["title"], j["year"]))
                         obj.id = j["id"]
                         loanItem.addBookToList(obj)
                     self.borrowedBooks.append(loanItem)
