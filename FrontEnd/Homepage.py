@@ -114,17 +114,45 @@ class Page:
         return self.homePage()
 
     def searchBook(self):
-        print("Type the title of a book")
-        user_input = input()
-        for cat in self.listsAllCat:
-            for book in cat.list_books:
-                search = cat.searchBook(book.title)
-                if user_input == search.title:
-                    print(
-                        f"Title: {cat.searchBook(user_input).title}\nCopies left: {len(cat.searchBook(user_input).list_book)}\n")
-                    return self.homePage() if self.currently_loggedin is None else self.user_page()
-        print("Book does not exist.\n")
-        return self.homePage() if self.currently_loggedin is None else self.user_page()
+        print("You can search for a book here on multiple fields, the fields may be left empty.\n")
+        title = input("What's the title of the book: ")
+        author = input("Who's the author of the book: ")
+        country = input("In what country does the book come from: ")
+        language = input("What's the language of the book: ")
+        pages = input("How many pages does the book have: ")
+        if pages.strip() != "":
+            pages = int(pages)
+        else:
+            pages = 0
+        year = input("In what year is the book published: ")
+        if year.strip() != "":
+            year = int(year)
+        else:
+            year = 0
+
+        books = []
+        for cat in self.list_cat:
+            tmpBooks = cat.searchBook(title, author, country, language, pages, year)
+            if tmpBooks:
+                books.append(tmpBooks)
+
+        if not books:
+            print("\nCould not find a book by the given criteria.\n")
+            return self.homePage() if self.currently_loggedin is None else self.user_page()
+
+        for catalog in books:
+            for book in catalog:
+                print("\nTitle: " + book.title)
+                print("Author: " + book.author)
+                print("Country: " + book.country)
+                print("Amount of pages: " + str(book.pages))
+                if book.checkAvailibility():
+                    print("In stock: Yes" + "\n")
+                else:
+                    print("In stock: No" + "\n")
+                
+
+
 
     def user_page(self):
         print("1. Search Book")

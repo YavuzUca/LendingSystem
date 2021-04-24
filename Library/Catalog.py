@@ -13,13 +13,12 @@ class Catalog:
     def getCatListBooks(self):
         return len(self.list_books)
 
-    def searchBook(self, set_name):
-        try:
-            for i in self.list_books:
-                if set_name == i.title:
-                    return i
-        except:
-            return "No book with that name exist!"
+    def searchBook(self, title, author, country, language, pages, year):
+        bookList = []
+        for i in self.list_books:
+            if i.title == title or i.author == author or i.country == country or i.pages == pages or i.year == year or i.language == language:
+                bookList.append(i)
+        return bookList
 
     def addBook(self, obj):
         self.list_books.append(obj)

@@ -13,3 +13,10 @@ class Book:
     def update(self, obj):
         obj.id = len(self.list_book) + 1
         self.list_book.append(obj)
+
+    def checkAvailibility(self):
+        count = 0
+        for i in self.list_book:
+            if i.available:
+                count += 1
+        return False if count == 0 else True
