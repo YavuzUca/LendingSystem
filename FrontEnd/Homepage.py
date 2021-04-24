@@ -167,7 +167,8 @@ class Page:
         print("2. My Rented Books")
         print("3. My Usersettings")
         print("4. Rent book")
-        print("5. Log out\n")
+        print("5. Hand in book")
+        print("6. Log out\n")
 
         keypress = input()
         if keypress == "1":
@@ -179,6 +180,8 @@ class Page:
         elif keypress == "4":
             self.rent_book()
         elif keypress == "5":
+            self.hand_book()
+        elif keypress == "6":
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
@@ -208,7 +211,7 @@ class Page:
                 for book_item in loanitem.list_bookitems:
                     print(
                         f"Name: {book_item.book_obj.title}\nStartdate: {loanitem.startdate}\nEnddate: {loanitem.enddate}\n")
-                # return self.user_page()
+
         return self.user_page()
 
     def rent_book(self):
@@ -365,3 +368,26 @@ class Page:
 
         print("It appears that the booktitle you put does not exist.")
         return self.admin_page()
+
+    def hand_book(self):
+        for loanitem in self.loansystem.borrowedBooks:
+            if self.currently_loggedin == loanitem.subscriber.username:
+                for book_item in loanitem.list_bookitems:
+                    print(
+                        f"Name: {book_item.book_obj.title}\nStartdate: {loanitem.startdate}\nEnddate: {loanitem.enddate}\n")
+        print("These are your rented books. If there is nothing, that means that you have nothing rented.")
+        book = input("Type in the title of the book you want to return.\n")
+        count = 0
+        for loanitem in self.loansystem.borrowedBooks:
+            if self.currently_loggedin == loanitem.subscriber.username:
+                for book_item in loanitem.list_bookitems:
+                    if book_item.book_obj.title == book:
+                        book_item.returnBookitem()
+                        loanitem.list_bookitems.remove(book_item)
+                        count += 1
+        if count < 1:
+            print("Book has not been found, wrong name?")
+            return self.user_page()
+        else:
+            print("Book returned")
+            return self.user_page()
