@@ -8,3 +8,7 @@ class Bookitem:
         if self.available:
             return True
         return False
+
+    def returnBookitem(self):
+        if self.available is False:
+            self.available = True

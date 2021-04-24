@@ -26,6 +26,10 @@ class Loanitem:
         else:
             print("Book not available")
 
+    def addBookToSingleList(self, obj):
+        self.list_bookitems.append(obj)
+        obj.available = False
+
     def borrowBook(self):
         for i in self.list_bookitems:
             i.available = False
