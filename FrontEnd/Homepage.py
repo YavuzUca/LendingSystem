@@ -20,7 +20,7 @@ class Page:
 
     def Default(self):
 
-        horror = Catalog("Horror")
+
         BookNameOne = Book("Corne", "The Netherlands",
                            "Dutch", "bol.com", "bol.com/777.png", 107, "Guy", 2001)
         SubOne = Subscriber("Male", "Dutch", "Corne", "den Breejen", "bogerd 9", "2922EA", "Rotterdam",
@@ -36,12 +36,12 @@ class Page:
         BookNameTwo.update(BookCopyItemTwo)
         BookNameTwo.update(BookCopyItemTwoOne)
 
-        horror.addBook(BookNameOne)
+        #horror.addBook(BookNameOne)
         BookCopyItemOne = Bookitem(BookNameOne)
         BookNameOne.update(BookCopyItemOne)
         self.usersystem.addSubcriber(SubOne)
         self.usersystem.addLibrarian(SubTwo)
-        self.listsAllCat.append(horror)
+
         self.listsAllCat.append(drama)
         #
         #
@@ -60,7 +60,9 @@ class Page:
         default = Catalog("Default")
         default.addBookFromFile("booksset1.json")
         self.listsAllCat.append(default)
-
+        horror = Catalog("Horror")
+        horror.addBookFromFile("Backups/Category/Horror/list_booksBackup.json")
+        self.listsAllCat.append(horror)
 
     def homePage(self):
         print()
@@ -253,6 +255,7 @@ class Page:
         print("7. Restore backup")
         print("8. Show Subscribers")
         print("9. Log out\n")
+        print(self.listsAllCat)
 
         keypress = input()
         if keypress == "1":
@@ -341,6 +344,8 @@ class Page:
                 return self.admin_page()
 
     def deleteBook(self):
+        for i in self.listsAllCat:
+            print(i.genre)
         print("Type the name of the book you want to delete.\n")
         bookname = input()
         for cat in self.listsAllCat:
@@ -370,7 +375,6 @@ class Page:
         for cat in self.listsAllCat:
             for book in cat.list_books:
                 if book.title == name:
-                    print(book)
                     bookitem = Bookitem(book)
                     book.update(bookitem)
                     print("Book copy added!")
@@ -405,7 +409,7 @@ class Page:
     def restoreBackup(self):
         for i in self.listsAllCat:
             i.restoreBackup()
-        self.usersystem.restoreBackup()
+        # self.usersystem.restoreBackup()
         self.loansystem.restoreBackup()
         print("Backups has been restored on the system.")
         return self.admin_page()
