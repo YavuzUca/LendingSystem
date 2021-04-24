@@ -16,6 +16,7 @@ class Page:
         self.loansystem = LoanAdministration()
         self.listsAllCat = []
         self.Default()
+        self.setDefault()
 
     def Default(self):
 
@@ -54,6 +55,12 @@ class Page:
         # UserSystem.createBackup()
         # horror.createBackup()
         #
+
+    def setDefault(self):
+        default = Catalog("Default")
+        default.addBookFromFile("booksset1.json")
+        self.listsAllCat.append(default)
+
 
     def homePage(self):
         print()
