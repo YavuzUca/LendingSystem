@@ -49,6 +49,7 @@ class LoanAdministration:
         try:
             with open('Backups/Loanitems/borrowedbooksBackup.json') as json_file:
                 json_list = json.load(json_file)
+                self.borrowedBooks = []
                 for i in json_list:
                     sub_obj = Subscriber(i["gender"], i["nameSet"], i["firstName"], i["surname"], i["address"],
                                          i["zipcode"], i["city"], i["email"], i["username"], i["telephone"])

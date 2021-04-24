@@ -88,8 +88,8 @@ class UserAdministration:
             json.dump(dict_customer, json_file)
 
     def restoreBackup(self):
-        self.personlist = []
         try:
+            self.personlist = []
             self.addCustomersFromJsonFile("Backups/Users/customerBackup.json")
         except:
-            print("No backup found. Please make one first.")
+            print("No backup User found. Please make one first.")

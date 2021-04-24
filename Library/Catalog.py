@@ -31,7 +31,6 @@ class Catalog:
                     self.list_books.append(
                         Book(i["author"], i["country"], i["imageLink"], i["language"], i["link"],
                              i["pages"], i["title"], i["year"]))
-                print("Forloop task is done")
 
         except FileNotFoundError:
             return "File not found!"
@@ -63,13 +62,13 @@ class Catalog:
         try:
             with open(f'Backups/Category/{self.genre.capitalize()}/list_booksBackup.json') as json_file:
                 json_list = json.load(json_file)
-                new_list = []
+                self.list_books = []
                 for i in json_list:
                     obj = Book(i["author"], i["country"], i["imageLink"], i["language"],
                                i["link"], i["pages"], i["title"], i["year"])
                     obj.list_book.append([j for j in i["list_book"]])
-                    new_list.append(obj)
+                    self.list_books.append(obj)
 
-                self.list_books = new_list
+                #self.list_books = new_list
         except FileNotFoundError:
             print("No backup found. Please make one first.")
