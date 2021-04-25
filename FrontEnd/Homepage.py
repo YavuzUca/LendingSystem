@@ -66,7 +66,6 @@ class Page:
 
         filename_input = "FakeNameSet20.csv"
         self.usersystem.addCustomersFromCsvFile(filename_input)
-        print("Users have been succesfully added!")
 
     def homePage(self):
         print()
@@ -259,7 +258,8 @@ class Page:
         print("7. Restore backup")
         print("8. Show Subscribers")
         print("9. Upload books via JSON file")
-        print("10. Log out\n")
+        print("10. Upload users via CSV file")
+        print("0. Log out\n")
 
         keypress = input()
         if keypress == "1":
@@ -281,12 +281,29 @@ class Page:
         elif keypress == "9":
             self.uploadBooksByJSON()
         elif keypress == "10":
+            self.addUserFromCsvFile()
+        elif keypress == "0":
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
         else:
             print("Invalid keypress\n")
             self.admin_page()
+
+    def addUserFromCsvFile(self):
+        fileName = input("Enter the file path here: ")
+
+        if not fileName.endswith(".csv"):
+            print("\nFile extension needs to end with a .csv extension")
+            return self.admin_page()
+
+        if not path.exists(fileName):
+            print("\nFile location does not exists")
+            return self.admin_page()
+
+        self.usersystem.addCustomersFromCsvFile(fileName)
+        print("Users have been succesfully added!")
+        return self.admin_page()
 
     def createCategory(self):
         print("Enter the name of the Catalog you want to add.\n")
