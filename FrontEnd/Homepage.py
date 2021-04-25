@@ -6,7 +6,7 @@ from Person.Librarian import Librarian
 from Library.Book import Book
 from Library.Bookitem import Bookitem
 from Library.Catalog import Catalog
-
+from os import path
 
 class Page:
     def __init__(self):
@@ -254,8 +254,8 @@ class Page:
         print("6. Create backup")
         print("7. Restore backup")
         print("8. Show Subscribers")
-        print("9. Log out\n")
-        print(self.listsAllCat)
+        print("9. Upload books via JSON file")
+        print("10. Log out\n")
 
         keypress = input()
         if keypress == "1":
@@ -275,6 +275,8 @@ class Page:
         elif keypress == "8":
             self.showAllSub()
         elif keypress == "9":
+            self.uploadBooksByJSON()
+        elif keypress == "10":
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
@@ -409,7 +411,7 @@ class Page:
     def restoreBackup(self):
         for i in self.listsAllCat:
             i.restoreBackup()
-        # self.usersystem.restoreBackup()
+        self.usersystem.restoreBackup()
         self.loansystem.restoreBackup()
         print("Backups has been restored on the system.")
         return self.admin_page()
@@ -425,3 +427,23 @@ class Page:
         print()
         return self.admin_page()
 
+    def uploadBooksByJSON(self):
+        fileName = input("What is the location of the file: ")
+
+        if not fileName.endswith(".json"):
+            print("\nFile extension needs to end with a .json extension")
+            return self.admin_page()
+
+        if not path.exists(fileName):
+            print("\nFile location does not exists")
+            return self.admin_page()
+
+        namecat = input("Type the name of the category where the books should be stored: ")
+        while not namecat in [i.genre for i in self.listsAllCat]:
+            print("\n")
+            namecat = input("Name category does not exist, try again: ")
+        for i in self.listsAllCat:
+            if i.genre == namecat:
+                i.addBookFromFile(fileName)
+                print("Books have been created in the specified category")
+                return self.admin_page()

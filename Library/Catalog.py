@@ -1,6 +1,7 @@
 import json
 from Config.file_checker import *
 from Library.Book import Book
+from Library.Bookitem import Bookitem
 
 
 class Catalog:
@@ -66,7 +67,9 @@ class Catalog:
                 for i in json_list:
                     obj = Book(i["author"], i["country"], i["imageLink"], i["language"],
                                i["link"], i["pages"], i["title"], i["year"])
-                    obj.list_book.append([j for j in i["list_book"]])
+                    for j in i["list_book"]:
+                        obj.list_book.append(Bookitem(obj, j["available"]))
+
                     self.list_books.append(obj)
 
                 #self.list_books = new_list
