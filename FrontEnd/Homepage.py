@@ -293,6 +293,10 @@ class Page:
     def createCategory(self):
         print("Enter the name of the Catalog you want to add.\n")
         name = input()
+
+        while (name in [catalog.genre for catalog in self.listsAllCat]):
+            name = input("This catalog already exists, please try it again: ")
+
         if type(name) is not str:
             print("Error, the name is not valid. Do you still want to continue? y/n")
             answer = input()
@@ -323,6 +327,10 @@ class Page:
             print("You cannot use anything else than a number for this field. Try again.\n")
             return self.createBook()
         title = input("Type the name/title of the book\n")
+        for catalog in self.listsAllCat:
+            if catalog.searchBook(title, "", "", "", 0, 0):
+                print("This title already exists in the catalog " + catalog.genre + "\n")
+                return self.createBook()
         try:
             year = int(input("Type the year. IMPORTANT: This must be a number!\n"))
         except ValueError:
