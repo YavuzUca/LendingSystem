@@ -6,7 +6,7 @@ from Person.Librarian import Librarian
 from Library.Book import Book
 from Library.Bookitem import Bookitem
 from Library.Catalog import Catalog
-from os import path
+from os import path, walk, listdir
 
 class Page:
     def __init__(self):
@@ -15,57 +15,52 @@ class Page:
         self.usersystem = UserAdministration()
         self.loansystem = LoanAdministration()
         self.listsAllCat = []
-        self.Default()
-        self.setDefault()
+        self.checkBackup()
 
-    def Default(self):
-
-
-        BookNameOne = Book("Corne", "The Netherlands",
-                           "Dutch", "bol.com", "bol.com/777.png", 107, "Guy", 2001)
-        SubOne = Subscriber("Male", "Dutch", "Corne", "den Breejen", "bogerd 9", "2922EA", "Rotterdam",
-                            "cornedev@outlook.com", "cornedb", "0180517579")
-        SubTwo = Librarian("Male", "Vuuzie", "Dutch", "Uca", "admin", "2922EA")
-
-        drama = Catalog("Drama")
-        BookNameTwo = Book("Corne", "The Netherlands",
-                           "Dutch", "bol.com", "bol.com/777.png", 107, "Lifeliner", 2001)
-        drama.addBook(BookNameTwo)
-        BookCopyItemTwo = Bookitem(BookNameTwo)
-        BookCopyItemTwoOne = Bookitem(BookNameTwo)
-        BookNameTwo.update(BookCopyItemTwo)
-        BookNameTwo.update(BookCopyItemTwoOne)
-
-        #horror.addBook(BookNameOne)
-        BookCopyItemOne = Bookitem(BookNameOne)
-        BookNameOne.update(BookCopyItemOne)
-        self.usersystem.addSubcriber(SubOne)
-        self.usersystem.addLibrarian(SubTwo)
-
-        self.listsAllCat.append(drama)
-        #
-        #
-        # LoanOne = Loanitem(SubOne)
-        # LoanOne.addBookToList(BookCopyItemOne)
-        # LoanOne.borrowBook()
-        #
-        # loanAdministration.update(LoanOne)
-        # drama.createBackup()
-        # loanAdministration.createBackup()
-        # UserSystem.createBackup()
-        # horror.createBackup()
-        #
+    def checkBackup(self):
+        if path.exists("Backups"):
+            if path.exists("Backups/Loanitems/borrowedbooksBackup.json"):
+                self.loansystem.restoreBackup()
+            if path.exists("Backups/Users/customerBackup.json"):
+                self.usersystem.restoreBackup()
+            else:
+                self.usersystem.addLibrarian(Librarian("Male", "One", "Librarian", "Dutch", "libOne", "libSecret1"))
+                self.usersystem.addLibrarian(Librarian("Female", "Two", "Librarian", "English", "libTwo", "libSecret2"))
+                self.usersystem.addLibrarian(Librarian("Male", "Three", "Librarian", "German", "libThree", "libSecret3"))
+                self.usersystem.addCustomersFromCsvFile("FakeNameSet20.csv")
+            if path.exists("Backups/Category") and len(listdir("Backups/Category")) != 0:
+                dirs = walk("Backups/Category")
+                for folder in dirs:
+                    if path.exists("Backups/Category/"+str(folder)+"/list_booksBackup.json"):
+                        tmp = Catalog(str(folder))
+                        tmp.restoreBackup()
+                        self.listsAllCat.append(tmp)
+            else:
+                default = Catalog("Default")
+                default.addBookFromFile("booksset1.json")
+                self.listsAllCat.append(default)
+                print(self.listsAllCat)
+                for book in self.listsAllCat[0].list_books:
+                    for i in range(3):
+                        tmpBookitem = Bookitem(book)
+                        book.update(tmpBookitem)
+        else:
+            self.setDefault()
 
     def setDefault(self):
         default = Catalog("Default")
         default.addBookFromFile("booksset1.json")
         self.listsAllCat.append(default)
-        horror = Catalog("Horror")
-        horror.addBookFromFile("Backups/Category/Horror/list_booksBackup.json")
-        self.listsAllCat.append(horror)
 
-        filename_input = "FakeNameSet20.csv"
-        self.usersystem.addCustomersFromCsvFile(filename_input)
+        for book in self.listsAllCat[0]:
+            for i in range(3):
+                tmpBookitem = Bookitem(book)
+                book.update(tmpBookitem)
+
+        self.usersystem.addLibrarian(Librarian("Male", "One", "Librarian", "Dutch", "libOne", "libSecret1"))
+        self.usersystem.addLibrarian(Librarian("Female", "Two", "Librarian", "English", "libTwo", "libSecret2"))
+        self.usersystem.addLibrarian(Librarian("Male", "Three", "Librarian", "German", "libThree", "libSecret3"))
+        self.usersystem.addCustomersFromCsvFile("FakeNameSet20.csv")
 
     def homePage(self):
         print()
