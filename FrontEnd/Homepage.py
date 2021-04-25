@@ -191,6 +191,9 @@ class Page:
         elif keypress == "5":
             self.hand_book()
         elif keypress == "6":
+            for i in self.listsAllCat:
+                i.createBackup()
+            self.loansystem.createBackup()
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
@@ -283,6 +286,10 @@ class Page:
         elif keypress == "10":
             self.addUserFromCsvFile()
         elif keypress == "0":
+            for i in self.listsAllCat:
+                i.createBackup()
+            self.usersystem.createBackup()
+            self.loansystem.createBackup()
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
@@ -327,14 +334,22 @@ class Page:
         print("Please type the name of the author, country, link of an image, "
               "language, link, the amount of pages, title and year in this order.")
         print("IMPORTANT: Make sure that the pages and year are numbers, not words/letters.")
-        author = input()
-        country = input()
-        imageLink = input()
-        language = input()
-        link = input()
-        pages = int(input())
-        title = input()
-        year = int(input())
+        author = input("Type the name of the Author\n")
+        country = input("Type the name of the country\n")
+        imageLink = input("Type or paste the link of an image of the book\n")
+        language = input("Type the language\n")
+        link = input("Type or paste the link\n")
+        try:
+            pages = int(input("Type how many pages the book has. IMPORTANT: This must be a number!\n"))
+        except ValueError:
+            print("You cannot use anything else than a number for this field. Try again.\n")
+            return self.createBook()
+        title = input("Type the name/title of the book\n")
+        try:
+            year = int(input("Type the year. IMPORTANT: This must be a number!\n"))
+        except ValueError:
+            print("You cannot use anything else than a number for this field. Try again.\n")
+            return self.createBook()
         if type(author) is str and type(country) is str and type(imageLink) is str and type(language) is str and type(
                 link) is str and type(pages) is int and type(title) is str and type(year) is int:
             print("Add book to a specific catalog? y/n\n")
@@ -365,10 +380,11 @@ class Page:
 
                 self.listsAllCat.append(catalog)
                 return self.admin_page()
+        else:
+            print("Used wrong type for the pages and year. Make sure those two are numbers.\n")
+            return self.admin_page()
 
     def deleteBook(self):
-        for i in self.listsAllCat:
-            print(i.genre)
         print("Type the name of the book you want to delete.\n")
         bookname = input()
         for cat in self.listsAllCat:
@@ -382,8 +398,8 @@ class Page:
                     print("Book has been deleted.")
                     cat.list_books.remove(book)
                     return self.admin_page()
-            print("Could not find a book with that title.\n")
-            return self.admin_page()
+        print("Could not find a book with that title.\n")
+        return self.admin_page()
 
     def makeBackup(self):
         for i in self.listsAllCat:
