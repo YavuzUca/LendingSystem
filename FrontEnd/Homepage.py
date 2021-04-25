@@ -400,6 +400,10 @@ class Page:
                     if book_item.book_obj.title == book:
                         book_item.returnBookitem()
                         loanitem.list_bookitems.remove(book_item)
+                        for cat in self.listsAllCat:
+                            for book in cat.list_books:
+                                if book.title == book_item.book_obj.title:
+                                    book.list_book.append(book_item)
                         count += 1
         if count < 1:
             print("Book has not been found, wrong name?")
