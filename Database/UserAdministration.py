@@ -27,7 +27,7 @@ class UserAdministration:
                                                  row["StreetAddress"], row["ZipCode"], row["City"], row["EmailAddress"],
                                                  row["Username"], row["TelephoneNumber"]))
                 else:
-                    self.addLibrarian(Librarian(row["Gender"], row["Nameset"], row["GivenName"], row["Surname"],
+                    self.addLibrarian(Librarian(row["Gender"], row["GivenName"], row["Surname"], row["Nameset"],
                                                 row["Username"], row["Password"]))
 
     def addLibrarian(self, newLibrarian):
