@@ -194,6 +194,7 @@ class Page:
             for i in self.listsAllCat:
                 i.createBackup()
             self.loansystem.createBackup()
+            self.usersystem.createBackup()
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
