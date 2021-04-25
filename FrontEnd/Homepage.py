@@ -26,7 +26,7 @@ class Page:
             self.usersystem.addLibrarian(Librarian("Male", "One", "Librarian", "Dutch", "libOne", "libSecret1"))
             self.usersystem.addLibrarian(Librarian("Female", "Two", "Librarian", "English", "libTwo", "libSecret2"))
             self.usersystem.addLibrarian(Librarian("Male", "Three", "Librarian", "German", "libThree", "libSecret3"))
-            self.usersystem.addCustomersFromCsvFile("FakeNameSet20.csv")
+            self.usersystem.addCustomersFromCsvFile("DefaultData/FakeNameSet20.csv")
         if path.exists("Backups/Category") and len(listdir("Backups/Category")) != 0:
             for folder in listdir("Backups/Category"):
                 if path.exists("Backups/Category/"+folder+"/list_booksBackup.json"):
@@ -35,7 +35,7 @@ class Page:
                     self.listsAllCat.append(tmp)
         else:
             default = Catalog("Default")
-            default.addBookFromFile("booksset1.json")
+            default.addBookFromFile("DefaultData/booksset1.json")
             self.listsAllCat.append(default)
 
             for cat in self.listsAllCat:
