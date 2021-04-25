@@ -25,7 +25,7 @@ class Page:
                            "Dutch", "bol.com", "bol.com/777.png", 107, "Guy", 2001)
         SubOne = Subscriber("Male", "Dutch", "Corne", "den Breejen", "bogerd 9", "2922EA", "Rotterdam",
                             "cornedev@outlook.com", "cornedb", "0180517579")
-        SubTwo = Librarian("Male", "Vuuzie", "Dutch", "Uca", "Vuuzie", "2922EA")
+        SubTwo = Librarian("Male", "Vuuzie", "Dutch", "Uca", "admin", "2922EA")
 
         drama = Catalog("Drama")
         BookNameTwo = Book("Corne", "The Netherlands",
@@ -63,6 +63,10 @@ class Page:
         horror = Catalog("Horror")
         horror.addBookFromFile("Backups/Category/Horror/list_booksBackup.json")
         self.listsAllCat.append(horror)
+
+        filename_input = "FakeNameSet20.csv"
+        self.usersystem.addCustomersFromCsvFile(filename_input)
+        print("Users have been succesfully added!")
 
     def homePage(self):
         print()
