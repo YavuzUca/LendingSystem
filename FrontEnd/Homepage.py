@@ -25,7 +25,7 @@ class Page:
                            "Dutch", "bol.com", "bol.com/777.png", 107, "Guy", 2001)
         SubOne = Subscriber("Male", "Dutch", "Corne", "den Breejen", "bogerd 9", "2922EA", "Rotterdam",
                             "cornedev@outlook.com", "cornedb", "0180517579")
-        SubTwo = Librarian("Male", "Vuuzie", "Dutch", "Uca", "Vuuzie", "2922EA")
+        SubTwo = Librarian("Male", "Vuuzie", "Dutch", "Uca", "admin", "2922EA")
 
         drama = Catalog("Drama")
         BookNameTwo = Book("Corne", "The Netherlands",
@@ -63,6 +63,9 @@ class Page:
         horror = Catalog("Horror")
         horror.addBookFromFile("Backups/Category/Horror/list_booksBackup.json")
         self.listsAllCat.append(horror)
+
+        filename_input = "FakeNameSet20.csv"
+        self.usersystem.addCustomersFromCsvFile(filename_input)
 
     def homePage(self):
         print()
@@ -188,6 +191,9 @@ class Page:
         elif keypress == "5":
             self.hand_book()
         elif keypress == "6":
+            for i in self.listsAllCat:
+                i.createBackup()
+            self.loansystem.createBackup()
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
@@ -255,7 +261,8 @@ class Page:
         print("7. Restore backup")
         print("8. Show Subscribers")
         print("9. Upload books via JSON file")
-        print("10. Log out\n")
+        print("10. Upload users via CSV file")
+        print("0. Log out\n")
 
         keypress = input()
         if keypress == "1":
@@ -277,12 +284,33 @@ class Page:
         elif keypress == "9":
             self.uploadBooksByJSON()
         elif keypress == "10":
+            self.addUserFromCsvFile()
+        elif keypress == "0":
+            for i in self.listsAllCat:
+                i.createBackup()
+            self.usersystem.createBackup()
+            self.loansystem.createBackup()
             self.currently_loggedin = None
             self.currently_loggedin_perm = None
             self.homePage()
         else:
             print("Invalid keypress\n")
             self.admin_page()
+
+    def addUserFromCsvFile(self):
+        fileName = input("Enter the file path here: ")
+
+        if not fileName.endswith(".csv"):
+            print("\nFile extension needs to end with a .csv extension")
+            return self.admin_page()
+
+        if not path.exists(fileName):
+            print("\nFile location does not exists")
+            return self.admin_page()
+
+        self.usersystem.addCustomersFromCsvFile(fileName)
+        print("Users have been succesfully added!")
+        return self.admin_page()
 
     def createCategory(self):
         print("Enter the name of the Catalog you want to add.\n")
@@ -306,14 +334,22 @@ class Page:
         print("Please type the name of the author, country, link of an image, "
               "language, link, the amount of pages, title and year in this order.")
         print("IMPORTANT: Make sure that the pages and year are numbers, not words/letters.")
-        author = input()
-        country = input()
-        imageLink = input()
-        language = input()
-        link = input()
-        pages = int(input())
-        title = input()
-        year = int(input())
+        author = input("Type the name of the Author\n")
+        country = input("Type the name of the country\n")
+        imageLink = input("Type or paste the link of an image of the book\n")
+        language = input("Type the language\n")
+        link = input("Type or paste the link\n")
+        try:
+            pages = int(input("Type how many pages the book has. IMPORTANT: This must be a number!\n"))
+        except ValueError:
+            print("You cannot use anything else than a number for this field. Try again.\n")
+            return self.createBook()
+        title = input("Type the name/title of the book\n")
+        try:
+            year = int(input("Type the year. IMPORTANT: This must be a number!\n"))
+        except ValueError:
+            print("You cannot use anything else than a number for this field. Try again.\n")
+            return self.createBook()
         if type(author) is str and type(country) is str and type(imageLink) is str and type(language) is str and type(
                 link) is str and type(pages) is int and type(title) is str and type(year) is int:
             print("Add book to a specific catalog? y/n\n")
@@ -344,10 +380,11 @@ class Page:
 
                 self.listsAllCat.append(catalog)
                 return self.admin_page()
+        else:
+            print("Used wrong type for the pages and year. Make sure those two are numbers.\n")
+            return self.admin_page()
 
     def deleteBook(self):
-        for i in self.listsAllCat:
-            print(i.genre)
         print("Type the name of the book you want to delete.\n")
         bookname = input()
         for cat in self.listsAllCat:
@@ -361,8 +398,8 @@ class Page:
                     print("Book has been deleted.")
                     cat.list_books.remove(book)
                     return self.admin_page()
-            print("Could not find a book with that title.\n")
-            return self.admin_page()
+        print("Could not find a book with that title.\n")
+        return self.admin_page()
 
     def makeBackup(self):
         for i in self.listsAllCat:

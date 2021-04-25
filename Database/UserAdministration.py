@@ -36,7 +36,12 @@ class UserAdministration:
         return newLibrarian
 
     def addSubcriber(self, newSubscriber):
-        newSubscriber.id = str(len(self.personlist)+1)
+        newSubscriber.id = str(len(self.personlist) + 1)
+        for user in self.personlist:
+            while newSubscriber.username == user.username:
+                newSubscriber.username = input("Looks like the person " + newSubscriber.firstName + " " +
+                                               newSubscriber.surname + " has a username that is already in use, "
+                                                                       "please enter a new one: ")
         self.personlist.append(newSubscriber)
         return newSubscriber
 
