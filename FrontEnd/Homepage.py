@@ -60,8 +60,16 @@ class Page:
             self.registerUser()
         elif keypress == "4":
             try:
+                for i in self.listsAllCat:
+                    i.createBackup()
+                self.loansystem.createBackup()
+                self.usersystem.createBackup()
                 quit()
             except:
+                for i in self.listsAllCat:
+                    i.createBackup()
+                self.loansystem.createBackup()
+                self.usersystem.createBackup()
                 quit()
         else:
             print("Invalid keypress\n")
@@ -141,6 +149,9 @@ class Page:
                 print("\nTitle: " + book.title)
                 print("Author: " + book.author)
                 print("Country: " + book.country)
+                print("Year: " + str(book.year))
+                print("Link: " + book.link.replace("\n", ""))
+                print("Image: " + book.imageLink)
                 print("Amount of pages: " + str(book.pages))
                 if book.checkAvailibility():
                     print("In stock: Yes" + "\n")
