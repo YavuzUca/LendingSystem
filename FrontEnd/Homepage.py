@@ -18,35 +18,31 @@ class Page:
         self.checkBackup()
 
     def checkBackup(self):
-        self.setDefault()
-        if path.exists("Backups"):
-            if path.exists("Backups/Loanitems/borrowedbooksBackup.json"):
-                self.loansystem.restoreBackup()
-            if path.exists("Backups/Users/customerBackup.json"):
-                self.usersystem.restoreBackup()
-            if path.exists("Backups/Category") and len(listdir("Backups/Category")) != 0:
-                dirs = walk("Backups/Category")
-                for folder in dirs:
-                    if path.exists("Backups/Category/"+str(folder)+"/list_booksBackup.json"):
-                        tmp = Catalog(str(folder))
-                        tmp.restoreBackup()
-                        self.listsAllCat.append(tmp)
+        if path.exists("Backups/Loanitems/borrowedbooksBackup.json"):
+            self.loansystem.restoreBackup()
+        if path.exists("Backups/Users/customerBackup.json"):
+            self.usersystem.restoreBackup()
+        else:
+            self.usersystem.addLibrarian(Librarian("Male", "One", "Librarian", "Dutch", "libOne", "libSecret1"))
+            self.usersystem.addLibrarian(Librarian("Female", "Two", "Librarian", "English", "libTwo", "libSecret2"))
+            self.usersystem.addLibrarian(Librarian("Male", "Three", "Librarian", "German", "libThree", "libSecret3"))
+            self.usersystem.addCustomersFromCsvFile("FakeNameSet20.csv")
+        if path.exists("Backups/Category") and len(listdir("Backups/Category")) != 0:
+            for folder in listdir("Backups/Category"):
+                if path.exists("Backups/Category/"+folder+"/list_booksBackup.json"):
+                    tmp = Catalog(folder)
+                    tmp.restoreBackup()
+                    self.listsAllCat.append(tmp)
+        else:
+            default = Catalog("Default")
+            default.addBookFromFile("booksset1.json")
+            self.listsAllCat.append(default)
 
-    def setDefault(self):
-        default = Catalog("Default")
-        default.addBookFromFile("booksset1.json")
-        self.listsAllCat.append(default)
-
-        for cat in self.listsAllCat:
-            for book in cat.list_books:
-                for i in range(3):
-                    tmpBookitem = Bookitem(book)
-                    book.update(tmpBookitem)
-
-        self.usersystem.addLibrarian(Librarian("Male", "One", "Librarian", "Dutch", "libOne", "libSecret1"))
-        self.usersystem.addLibrarian(Librarian("Female", "Two", "Librarian", "English", "libTwo", "libSecret2"))
-        self.usersystem.addLibrarian(Librarian("Male", "Three", "Librarian", "German", "libThree", "libSecret3"))
-        self.usersystem.addCustomersFromCsvFile("FakeNameSet20.csv")
+            for cat in self.listsAllCat:
+                for book in cat.list_books:
+                    for i in range(3):
+                        tmpBookitem = Bookitem(book)
+                        book.update(tmpBookitem)
 
     def homePage(self):
         print()
